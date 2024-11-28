@@ -3,7 +3,6 @@ import 'package:lab1/post.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:math';
 
 void main() {
   runApp(
@@ -48,7 +47,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Future<List<Post>> postsFuture = getPosts();
-  Future<List<Comment>> commentsFuture = getComments();
 
   static Future<List<Post>> getPosts() async {
     var url1 = Uri.parse(
@@ -59,17 +57,6 @@ class _HomeState extends State<Home> {
     final List body1 = json.decode(response1.body);
     var part1 = body1.map((e) => Post.fromJson(e)).toList();
     return part1;
-  }
-
-  static Future<List<Comment>> getComments() async {
-    var url2 = Uri.parse(
-        "https://jsonplaceholder.typicode.com/comments?_start=0&_limit=5");
-    final response2 =
-        await http.get(url2, headers: {"Content-Type": "application/json"});
-
-    final List body2 = json.decode(response2.body);
-    var part2 = body2.map((e) => Comment.fromJson(e)).toList();
-    return part2;
   }
 
   @override
@@ -110,20 +97,29 @@ class _HomeState extends State<Home> {
       itemBuilder: (context, index) {
         final post = posts[index];
         return Container(
-          color: Colors.grey.shade300,
-          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-          height: 100,
+          margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 2),
+          padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
+          height: 300,
           width: double.maxFinite,
-          child: Row(
+          child: Column(
             children: [
+              const Divider(),
               Expanded(flex: 1, child: Image.network(post.url!)),
-              const SizedBox(width: 10),
-              Expanded(flex: 3, child: Text(post.title!)),
+              const Divider(),
+              Expanded(flex: 1, child: Text(post.title!)),
             ],
           ),
+
         );
       },
     );
   }
+
 }
+
+
+/*
+flutter run -d chrome
+flutter run -d windows
+flutter run -d android
+*/
